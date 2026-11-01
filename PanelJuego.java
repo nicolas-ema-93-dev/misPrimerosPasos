@@ -12,6 +12,8 @@ public class PanelJuego extends JPanel implements ActionListener {
     Timer timer;
     private Viborita v;
     private Comida comida;
+    private int contadorC;
+    private ComidaEspecial CM;
     private int puntos;
     private Ventana ventanaPrincipal;
 
@@ -24,6 +26,8 @@ public class PanelJuego extends JPanel implements ActionListener {
         v = new Viborita();
         comida = new Comida();
         puntos = 0;
+        this.contadorC = 0;
+        CM = new ComidaEspecial();
         // Activamos el escuchador de teclado para moverla en tiempo real
         addKeyListener(new KeyAdapter() {
             @Override
@@ -58,6 +62,15 @@ public class PanelJuego extends JPanel implements ActionListener {
         g.fillRect(posComida.x * TAMAÑO_CASILLA, posComida.y * TAMAÑO_CASILLA
         ,TAMAÑO_CASILLA-2,TAMAÑO_CASILLA-2);
 
+        //dibujamos la comida especial;
+        if(contadorC > 10) {
+            g.setColor(Color.ORANGE);
+            Point posComidaespe = CM.getM();
+            g.fillRect(posComidaespe.x * TAMAÑO_CASILLA, posComidaespe.y * TAMAÑO_CASILLA
+                    , TAMAÑO_CASILLA - 2, TAMAÑO_CASILLA - 2);
+        }
+
+
         //dibujamos el puntaje
         g.setColor(Color.BLUE);
         g.setFont(new Font("Arial", Font.BOLD, 14));
@@ -71,10 +84,16 @@ public class PanelJuego extends JPanel implements ActionListener {
         v.mover();
         // 2. Verificar si chocó o comió
         if (v.comer(comida)) {
+            contadorC = contadorC+1;
             sumarPuntos();
             v.crecer();               // Se agranda
             comida.generarNuevaPosicion(v.getCuerpo());// Hacemos aparecer otra manzana en otro lado
-        } else if (v.autoColicion(v.getCuerpo())) {
+        } else if(CM.getM()!= null&&v.comerEspe(CM)&&contadorC >= 10){
+            sumarPuntosEspe();
+            v.crecer();
+            contadorC = 0;
+            CM.generarNuevaPosicion(v.getCuerpo());
+        }else if (v.autoColicion(v.getCuerpo())) {
             timer.stop();
             String nombreJugador = JOptionPane.showInputDialog(
                     null,
@@ -97,13 +116,19 @@ public class PanelJuego extends JPanel implements ActionListener {
     }
 
     public void sumarPuntos(){
-        puntos = puntos+100;
+       puntos = puntos +100;
     }
+
+    public void sumarPuntosEspe(){
+        puntos = puntos +150;
+    }
+
 
     public void reiniciarVariables(){
         this.puntos=0;
         v = new Viborita();
         comida = new Comida();
+        contadorC = 0;
         timer.start();
     }
 }

@@ -8,6 +8,7 @@ public class Viborita {
     private LinkedList<Point> cuerpo;
     private char direccion; // 'R' (Derecha), 'L' (Izquierda), 'U' (Arriba), 'D' (Abajo)
     private Comida comida;
+    private ComidaEspecial CM;
     public Viborita() {
         cuerpo = new LinkedList<>();
         // Arrancamos con un cuerpo de 3 eslabones de ejemplo
@@ -17,6 +18,7 @@ public class Viborita {
 
         direccion = 'R'; // Arranca moviéndose a la derecha
         comida = comida;
+        CM = CM;
     }
 
     public void mover() {
@@ -90,6 +92,14 @@ public class Viborita {
 
         // Devuelve true solo si coincide tanto el ancho (X) como el alto (Y)
         return cabeza.x == posComida.x && cabeza.y == posComida.y;
+    }
+
+    public boolean comerEspe(ComidaEspecial CM) {
+        Point cabeza = cuerpo.getFirst();
+        Point posComidaEspe = CM.getM();
+
+        // Devuelve true solo si coincide tanto el ancho (X) como el alto (Y)
+        return cabeza.x == posComidaEspe.x && cabeza.y == posComidaEspe.y;
     }
 
     public LinkedList<Point> getCuerpo() {

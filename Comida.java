@@ -9,8 +9,12 @@ public class Comida {
 
 
     public Comida() {
-        this.M = new Point(8,5);
+        Random random = new Random();
+        int x = random.nextInt(1,19);
+        int y = random.nextInt(1,19);
+        this.M = new Point(x,y);
     }
+
 
     public void generarNuevaPosicion(LinkedList<Point> cuerpoVibora) {
         Random random = new Random();
@@ -20,8 +24,8 @@ public class Comida {
             posicionOcupada = false; // Arrancamos suponiendo que el casillero está libre
 
             // 1. Generamos coordenadas al azar (ej: de 0 a 19)
-            int newX = random.nextInt(20);
-            int newY = random.nextInt(20);
+            int newX = random.nextInt(1,19);
+            int newY = random.nextInt(1,19);
             this.M = new Point(newX, newY);
 
             // 2. Recorremos TODO el cuerpo de la víbora para chequear si choca con alguno
